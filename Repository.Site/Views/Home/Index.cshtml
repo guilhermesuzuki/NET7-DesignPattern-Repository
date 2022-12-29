@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css" />
     <script src="https://kit.fontawesome.com/833055c137.js" crossorigin="anonymous"></script>
     <style>
-        .menu-table { display:table;padding:0;margin:0; }
-        .menu-table > * { display:table-cell;vertical-align:middle; }
-        #layout,#sidebar,#content {height:100%;}
-        input {width:100%;}
-        button {cursor:pointer;}
-        table {border:none;}
-        .selected {border-left:5px solid #222 !important;}
+        .menu-table { display: table; padding: 0; margin: 0; }
+            .menu-table > * { display: table-cell; vertical-align: middle; }
+        #layout, #sidebar, #content { height: 100%; }
+        input { width: 100%; }
+        button { cursor: pointer; }
+        table { border: none; }
+        .selected { border-left: 5px solid #222 !important; }
     </style>
 </head>
 <body>
@@ -68,55 +68,67 @@
                     </section>
                     <section class="cars pure-u-1">
                         <table class="pure-u-1" border="0" cellspacing="0" width="100%" style="display:table;">
-                            <tr style="margin-bottom: 5px;">
-                                <td>Model</td>
-                                <td>License Plate</td>
-                                <td></td>
-                            </tr>
-                            @foreach(var car in Model.People.FirstOrDefault()?.Cars)
+                            <thead>
+                                <tr style="margin-bottom: 5px;">
+                                    <th style="width:auto;text-align:left;">Model</th>
+                                    <th style="width:20%;">License Plate</th>
+                                    <th style="width: 50px;"></th>
+                                </tr>
+                            </thead>
+                            @foreach (var car in Model.People.FirstOrDefault()?.Cars)
                             {
-                                <tr data-car-id="@car.Id" class="car-show">
+                                <tr data-car-id="@car.Id" data-car-make="@car.Make" data-car-model="@car.Model" data-car-licenseplate="@car.LicensePlate" class="car-show">
                                     <td>
                                         <ul class="menu-table">
                                             <li style="padding-right: 5px;"><i class="fas fa-car"></i></li>
                                             <li>
-                                                <div>@car.Make • @car.Model</div>
+                                                <div class="car-show-make-model">@car.Make • @car.Model</div>
                                                 <div style="font-size: 12px;">@car.Id</div>
                                             </li>
                                         </ul>
                                     </td>
-                                    <td style="width: 20%;">@car.LicensePlate</td>
-                                    <td style="width: 50px; text-align: right;">
-                                        <span class="edit-car" style="cursor:pointer;"><i class="fas fa-edit"></i></span>
-                                        <span class="delete-car" style="cursor:pointer;font-size:15px;"><i class="fas fa-trash"></i></span>
+                                    <td class="car-show-licenseplate">@car.LicensePlate</td>
+                                    <td style="text-align: right;">
+                                        <span class="edit-car" style="cursor:pointer;" title="Edit"><i class="fas fa-edit"></i></span>
+                                        <span class="delete-car" style="cursor:pointer;font-size:15px;" title="Delete"><i class="fas fa-trash"></i></span>
                                     </td>
                                 </tr>
                                 <tr data-car-id="@car.Id" class="car-edit" style="display:none;">
                                     <td colspan="10">
-                                        <div class="pure-g">
-                                            <div class="pure-u-1-4 menu-table">
-                                                <span>Make:</span>
-                                            </div>
-                                            <div class="pure-u-3-4">
-                                                <input value="@car.Make">
-                                            </div>
-                                        </div>
-                                        <div class="pure-g">
-                                            <div class="pure-u-1-4 menu-table">
-                                                <span>Model:</span>
-                                            </div>
-                                            <div class="pure-u-3-4">
-                                                <input value="@car.Model">
-                                            </div>
-                                        </div>
+                                        <div class="pure-u-1" style="border:1px dotted #222;box-sizing:border-box;padding:10px;margin-bottom:10px;">
                                             <div class="pure-g">
-                                            <div class="pure-u-1-4 menu-table">
-                                                <span>License Plate:</span>
+                                                <div class="pure-u-1-4 menu-table">
+                                                    <span>Make:</span>
                                                 </div>
                                                 <div class="pure-u-3-4">
-                                                    <input value="@car.LicensePlate">
+                                                    <input class="car-edit-make" value="@car.Make">
                                                 </div>
                                             </div>
+                                            <div class="pure-g">
+                                                <div class="pure-u-1-4 menu-table">
+                                                    <span>Model:</span>
+                                                </div>
+                                                <div class="pure-u-3-4">
+                                                    <input class="car-edit-model" value="@car.Model">
+                                                </div>
+                                            </div>
+                                            <div class="pure-g">
+                                                <div class="pure-u-1-4 menu-table">
+                                                    <span>License Plate:</span>
+                                                </div>
+                                                <div class="pure-u-3-4">
+                                                    <input class="car-edit-licenseplate" value="@car.LicensePlate">
+                                                </div>
+                                            </div>
+                                            <div class="pure-g" style="margin-top:5px;">
+                                                <div class="pure-u-1-4">
+                                                </div>
+                                                <div class="pure-u-3-4">
+                                                    <span class="edit-save" style="cursor:pointer;" title="Save"><i class="fas fa-save"></i></span>
+                                                    <span class="edit-cancel" style="cursor:pointer;font-size:15px;" title="Cancel"><i class="fas fa-window-close"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -133,19 +145,20 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script type="text/javascript">
-        $("#sidebar .person").each(function(){
+        $("#sidebar .person").each(function () {
             var person = $(this);
-            person.click(function(){
+            person.click(function () {
                 var id = person.data("person-id");
 
+                //obtains the person information
                 $.ajax({
                     url: "/api/people/" + id,
                     dataType: "json",
-                    complete: function(a,b){
+                    complete: function (a, b) {
                         console.log(a);
                         console.log(b);
                         var json = a.responseJSON;
-                        
+
                         $("input#id").val(json.id);
                         $("input#first-name").val(json.firstName);
                         $("input#last-name").val(json.lastName);
@@ -155,6 +168,7 @@
                     }
                 });
 
+                //and their cars (if any)
                 $.ajax({
                     url: "/cars/?personId=" + id,
                     dataType: "html",
@@ -164,10 +178,78 @@
                         var html = a.responseText;
                         $(".cars > table").empty();
                         $(".cars > table").html(html);
+                        actions();
                     }
                 });
             });
         });
+
+        function actions() {
+            $(".edit-car").click(function () {
+                var em = $(this);
+                var tr = em.closest("tr[data-car-id]");
+                var cs = em.closest("tr.car-show");
+                var id = tr.data("car-id");
+                var ce = $("tr[data-car-id=" + id + "].car-edit");
+
+                cs.hide();
+
+                var make = tr.data("car-make");
+                var model = tr.data("car-model");
+                var licenseplate = tr.data("car-licenseplate");
+
+                ce.find(".car-edit-make").val(make);
+                ce.find(".car-edit-model").val(model);
+                ce.find(".car-edit-licenseplate").val(licenseplate);
+
+                ce.show();
+
+                console.log(ce);
+            });
+
+            $(".delete-car").click(function () {
+                var em = $(this);
+                var tr = em.closest("tr[data-car-id]");
+                var cs = em.closest("tr.car-show");
+                cs.data("is-deleted", true);
+                cs.hide();
+            });
+
+            $(".edit-cancel").click(function () {
+                var em = $(this);
+                var tr = em.closest("tr[data-car-id]");
+                var id = tr.data("car-id");
+                var ce = $("tr[data-car-id=" + id + "].car-edit");
+                var cs = $("tr[data-car-id=" + id + "].car-show");
+
+                ce.hide();
+                cs.show();
+            });
+
+            $(".edit-save").click(function () {
+                var em = $(this);
+                var tr = em.closest("tr.car-edit");
+                var id = tr.data("car-id");
+                var ce = $("tr[data-car-id=" + id + "].car-edit");
+                var cs = $("tr[data-car-id=" + id + "].car-show");
+
+                var newMake = tr.find(".car-edit-make").val();
+                var newModel = tr.find(".car-edit-model").val();
+                var newLicensePlate = tr.find(".car-edit-licenseplate").val();
+
+                cs.find(".car-show-make-model").text(newMake + " • " + newModel);
+                cs.find(".car-show-licenseplate").text(newLicensePlate);
+
+                cs.data("car-make", newMake);
+                cs.data("car-model", newModel);
+                cs.data("car-licenseplate", newLicensePlate);
+
+                ce.hide();
+                cs.show();
+            });
+        }
+        
+        actions();
     </script>
 </body>
 </html>
