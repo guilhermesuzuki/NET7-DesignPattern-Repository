@@ -1,9 +1,11 @@
 ﻿@model PeopleViewModel
 @using Repository.Site.ViewModels;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var selectedPerson = Model.People.FirstOrDefault()?.Person;
 }
 <html>
 <head>
@@ -11,25 +13,32 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css" />
     <script src="https://kit.fontawesome.com/833055c137.js" crossorigin="anonymous"></script>
     <style>
-        .menu-table { display:table; }
+        .menu-table { display:table;padding:0;margin:0; }
         .menu-table > * { display:table-cell;vertical-align:middle; }
         #layout,#sidebar,#content {height:100%;}
         input {width:100%;}
         button {cursor:pointer;}
         table {border:none;}
+        .selected {border-left:5px solid #222 !important;}
     </style>
 </head>
 <body>
     <div id="layout" class="pure-g">
-        <div id="sidebar" class="pure-u-1 pure-u-md-1-4" style="box-sizing:border-box; padding:20px; overflow-y: scroll; border-right: 1px solid #222;">
+        <div id="sidebar" class="pure-u-1 pure-u-md-1-4" style="box-sizing:border-box; padding:20px; overflow-y: auto; border-right: 1px solid #222;">
             @foreach (var person in Model.People)
             {
-                <div class="pure-u-1" style="padding:10px;border: 1px solid #222;box-sizing:border-box;margin-bottom: 10px; cursor: pointer;">
-                    <div style="font-size: 18px;">
-                        <i class="fas fa-user"></i>
-                        <strong>@person.Person.LastName, @person.Person.FirstName</strong></div>
-                    <div style="font-size: 10px;">
-                        @person.Person.Id</div>
+                <div data-person-id="@person.Person.Id" class="pure-u-1 person @(selectedPerson == person.Person ? "selected" : null)" style="padding:10px;border: 1px solid #222;box-sizing:border-box;margin-bottom: 10px; cursor: pointer;">
+                    <ul class="menu-table">
+                        <li style="padding-right:5px;"><i class="fas fa-user"></i></li>
+                        <li>
+                            <div style="font-size: 18px;">
+                                <strong>@person.Person.LastName, @person.Person.FirstName</strong>
+                            </div>
+                            <div style="font-size: 10px;">
+                                @person.Person.Id
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             }
         </div>
@@ -41,7 +50,7 @@
                         <div class="pure-g" style="margin-bottom: 5px;">
                             <div class="pure-u-1-4 menu-table"><span>Id:</span></div>
                             <div class="pure-u-3-4">
-                                <input id="first-name" type="text" value="@Model.People.FirstOrDefault()?.Person.Id" disabled="disabled" />
+                                <input id="id" type="text" value="@Model.People.FirstOrDefault()?.Person.Id" disabled="disabled" />
                             </div>
                         </div>
                         <div class="pure-g" style="margin-bottom: 5px;">
@@ -53,7 +62,7 @@
                         <div class="pure-g" style="margin-bottom: 5px;">
                             <div class="pure-u-1-4 menu-table"><span>Last Name:</span></div>
                             <div class="pure-u-3-4">
-                                <input id="first-name" type="text" value="@Model.People.FirstOrDefault()?.Person.LastName" />
+                                <input id="last-name" type="text" value="@Model.People.FirstOrDefault()?.Person.LastName" />
                             </div>
                         </div>
                     </section>
@@ -68,10 +77,13 @@
                             {
                                 <tr data-car-id="@car.Id" class="car-show">
                                     <td>
-                                        <div>
-                                            <i class="fas fa-car"></i>
-                                            @car.Make • @car.Model</div>
-                                        <div style="font-size: 12px;">@car.Id</div>
+                                        <ul class="menu-table">
+                                            <li style="padding-right: 5px;"><i class="fas fa-car"></i></li>
+                                            <li>
+                                                <div>@car.Make • @car.Model</div>
+                                                <div style="font-size: 12px;">@car.Id</div>
+                                            </li>
+                                        </ul>
                                     </td>
                                     <td style="width: 20%;">@car.LicensePlate</td>
                                     <td style="width: 50px; text-align: right;">
@@ -119,5 +131,43 @@
             <div class="pure-u-1 pure-u-md-1-2"></div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script type="text/javascript">
+        $("#sidebar .person").each(function(){
+            var person = $(this);
+            person.click(function(){
+                var id = person.data("person-id");
+
+                $.ajax({
+                    url: "/api/people/" + id,
+                    dataType: "json",
+                    complete: function(a,b){
+                        console.log(a);
+                        console.log(b);
+                        var json = a.responseJSON;
+                        
+                        $("input#id").val(json.id);
+                        $("input#first-name").val(json.firstName);
+                        $("input#last-name").val(json.lastName);
+
+                        $("#sidebar .selected").removeClass("selected");
+                        $("#sidebar [data-person-id=" + json.id + "]").addClass("selected");
+                    }
+                });
+
+                $.ajax({
+                    url: "/cars/?personId=" + id,
+                    dataType: "html",
+                    complete: function (a, b) {
+                        console.log(a);
+                        console.log(b);
+                        var html = a.responseText;
+                        $(".cars > table").empty();
+                        $(".cars > table").html(html);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Car>
+@using Repository.Models;
+@{
+}
+<tr style="margin-bottom: 5px;">
+    <td>Model</td>
+    <td>License Plate</td>
+    <td></td>
+</tr>
+@foreach (var car in Model)
+{
+    <tr data-car-id="@car.Id" class="car-show">
+        <td>
+            <ul class="menu-table">
+                <li style="padding-right: 5px;"><i class="fas fa-car"></i></li>
+                <li>
+                    <div>@car.Make • @car.Model</div>
+                    <div style="font-size: 12px;">@car.Id</div>
+                </li>
+            </ul>
+        </td>
+        <td style="width: 20%;">@car.LicensePlate</td>
+        <td style="width: 50px; text-align: right;">
+            <span class="edit-car" style="cursor:pointer;"><i class="fas fa-edit"></i></span>
+            <span class="delete-car" style="cursor:pointer;font-size:15px;"><i class="fas fa-trash"></i></span>
+        </td>
+    </tr>
+    <tr data-car-id="@car.Id" class="car-edit" style="display:none;">
+        <td colspan="10">
+            <div class="pure-g">
+                <div class="pure-u-1-4 menu-table">
+                    <span>Make:</span>
+                </div>
+                <div class="pure-u-3-4">
+                    <input value="@car.Make">
+                </div>
+            </div>
+            <div class="pure-g">
+                <div class="pure-u-1-4 menu-table">
+                    <span>Model:</span>
+                </div>
+                <div class="pure-u-3-4">
+                    <input value="@car.Model">
+                </div>
+            </div>
+            <div class="pure-g">
+                <div class="pure-u-1-4 menu-table">
+                    <span>License Plate:</span>
+                </div>
+                <div class="pure-u-3-4">
+                    <input value="@car.LicensePlate">
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+
