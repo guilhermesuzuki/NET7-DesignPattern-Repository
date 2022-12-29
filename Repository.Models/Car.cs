@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Repository.Models
 {
     [Table("Cars")]
-    [Index(nameof(Make), nameof(Model), nameof(PlateNumber), nameof(PersonId), IsUnique = true, Name = "IX_Cars_1")]
+    [Index(nameof(Make), nameof(Model), nameof(LicensePlate), nameof(PersonId), IsUnique = true, Name = "IX_Cars_1")]
     public class Car: Interfaces.IId
     {
         [Key]
@@ -35,7 +35,7 @@ namespace Repository.Models
         /// </summary>
         [Required]
         [StringLength(25)]
-        public string PlateNumber { get; set; } = string.Empty;
+        public string LicensePlate { get; set; } = string.Empty;
 
         /// <summary>
         /// Person Id (the car belongs to).

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repository.Data.Interfaces;
+using Repository.Site.ViewModels;
 
 namespace Repository.Site.Controllers
 {
@@ -24,7 +25,21 @@ namespace Repository.Site.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var pvm = new PeopleViewModel();
+            var people = this._personRepository.Query().ToList();
+
+            //obtains all the cars from each person
+            foreach (var person in people)
+            {
+                var cars = this._carRepository
+                    .Query()
+                    .Where(x => x.PersonId == person.Id)
+                    .ToList();
+
+                pvm.People.Add(new PersonCars { Person = person, Cars = cars });
+            }
+
+            return View(pvm);
         }
     }
 }
