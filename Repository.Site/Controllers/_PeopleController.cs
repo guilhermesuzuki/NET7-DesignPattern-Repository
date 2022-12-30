@@ -6,8 +6,11 @@ using System.Transactions;
 
 namespace Repository.Site.Controllers
 {
-    [Route("api/people")]
+    /// <summary>
+    /// People API Controller.
+    /// </summary>
     [ApiController]
+    [Route("api/people")]
     public class _PeopleController : ControllerBase
     {
         protected readonly IPersonRepository _personRepository;

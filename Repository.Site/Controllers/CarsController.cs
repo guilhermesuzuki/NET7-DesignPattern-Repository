@@ -13,6 +13,7 @@ namespace Repository.Site.Controllers
             this._carRepository = carRepository;
         }
 
+        [HttpGet]
         public IActionResult Index(Guid personId)
         {
             var cars = this._carRepository

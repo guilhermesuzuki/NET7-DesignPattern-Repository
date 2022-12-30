@@ -43,9 +43,12 @@
             }
         </div>
         <div id="content" class="pure-u-1 pure-u-md-3-4" style="box-sizing: border-box;">
-            <div class="pure-u-1 pure-u-md-1-2" style="border-right: 1px solid #222; box-sizing:border-box;padding:20px;height:100%;">
+            @*edit*@
+            <div class="pure-u-1 pure-u-md-1-2" style="border-right: 1px solid #222; box-sizing:border-box;padding:20px;height:100%;float:left;">
                 <div class="pure-u-1" style="position:relative;height:100%;">
-                    <header style="margin-bottom: 20px; font-size: 20px;">Edit your information here:</header>
+                    <header style="margin-bottom: 20px; font-size: 20px;">
+                        <i class="fas fa-edit" aria-hidden="true"></i>
+                        Edit the person's information here:</header>
                     <section class="pure-u-1" style="margin-bottom:10px;">
                         <div class="pure-g" style="margin-bottom: 5px;">
                             <div class="pure-u-1-4 menu-table"><span>Id:</span></div>
@@ -66,8 +69,8 @@
                             </div>
                         </div>
                     </section>
-                    <section class="cars pure-u-1">
-                        <table class="pure-u-1" border="0" cellspacing="0" width="100%" style="display:table;">
+                    <section class="edit cars pure-u-1">
+                        <table class="pure-u-1" border="0" cellspacing="5" width="100%" style="display:table;border:1px solid #222;">
                             <thead>
                                 <tr style="margin-bottom: 5px;">
                                     <th style="width:auto;text-align:left;">Model</th>
@@ -134,13 +137,129 @@
                             }
                         </table>
                     </section>
-                    <section class="buttons" style="position:absolute;bottom:0;left:0;right:0;">
-                        <button id="edit-save">Save</button>
-                        <button id="edit-clear">Clear Changes</button>
+                    <section class="buttons" style="position:absolute;bottom:0;left:0;right:0;background-color:lightgray;padding:20px;">
+                        <div class="pure-u-1" style="border:1px dotted #222;box-sizing:border-box;padding:10px;margin-bottom:10px;">
+                            <header style="margin-bottom:5px;">
+                                <strong>New car:</strong>
+                            </header>
+                            <div class="pure-g">
+                                <div class="pure-u-1-4 menu-table">
+                                    <span>Make:</span>
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <input class="car-edit-make" value="">
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1-4 menu-table">
+                                    <span>Model:</span>
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <input class="car-edit-model" value="">
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1-4 menu-table">
+                                    <span>License Plate:</span>
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <input class="car-edit-licenseplate" value="">
+                                </div>
+                            </div>
+                            <div class="pure-g" style="margin-top:5px;">
+                                <div class="pure-u-1-4">
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <span class="car-new-save" style="cursor:pointer;" title="Save"><i class="fas fa-save"></i></span>
+                                    <span class="car-new-cancel" style="cursor:pointer;font-size:15px;" title="Cancel"><i class="fas fa-window-close"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="person-edit-save">Save</button>
+                        <button id="person-edit-clear">Clear Changes</button>
                     </section>
                 </div>
             </div>
-            <div class="pure-u-1 pure-u-md-1-2"></div>
+            @*new*@
+            <div class="pure-u-1 pure-u-md-1-2" style="border-right: 1px solid #222; box-sizing:border-box;padding:20px;height:100%;">
+                <div class="pure-u-1" style="position:relative;height:100%;">
+                    <header style="margin-bottom: 20px; font-size: 20px;">
+                        <i class="fas fa-star" aria-hidden="true"></i>
+                        Enter the person's information here for a new entry:</header>
+                    <section class="pure-u-1" style="margin-bottom:10px;">
+                        <div class="pure-g" style="margin-bottom: 5px;">
+                            <div class="pure-u-1-4 menu-table"><span>Id:</span></div>
+                            <div class="pure-u-3-4">
+                                <input id="new-id" type="text" value="" disabled="disabled" />
+                            </div>
+                        </div>
+                        <div class="pure-g" style="margin-bottom: 5px;">
+                            <div class="pure-u-1-4 menu-table"><span>First Name:</span></div>
+                            <div class="pure-u-3-4">
+                                <input id="new-first-name" type="text" value="" />
+                            </div>
+                        </div>
+                        <div class="pure-g" style="margin-bottom: 5px;">
+                            <div class="pure-u-1-4 menu-table"><span>Last Name:</span></div>
+                            <div class="pure-u-3-4">
+                                <input id="new-last-name" type="text" value="" />
+                            </div>
+                        </div>
+                    </section>
+                    <section class="cars pure-u-1">
+                        <table class="pure-u-1" border="0" cellspacing="5" width="100%" style="display:table;border:1px solid #222;">
+                            <thead>
+                                <tr style="margin-bottom: 5px;">
+                                    <th style="width:auto;text-align:left;">Model</th>
+                                    <th style="width:20%;text-align:left;">License Plate</th>
+                                    <th style="width: 50px;"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </section>
+                    <section class="buttons" style="position:absolute;bottom:0;left:0;right:0;background-color:lightgray;padding:20px;">
+                        <div class="pure-u-1" style="border:1px dotted #222;box-sizing:border-box;padding:10px;margin-bottom:10px;">
+                            <header style="margin-bottom:5px;">
+                                <strong>New car:</strong>
+                            </header>
+                            <div class="pure-g">
+                                <div class="pure-u-1-4 menu-table">
+                                    <span>Make:</span>
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <input class="car-edit-make" value="">
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1-4 menu-table">
+                                    <span>Model:</span>
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <input class="car-edit-model" value="">
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1-4 menu-table">
+                                    <span>License Plate:</span>
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <input class="car-edit-licenseplate" value="">
+                                </div>
+                            </div>
+                            <div class="pure-g" style="margin-top:5px;">
+                                <div class="pure-u-1-4">
+                                </div>
+                                <div class="pure-u-3-4">
+                                    <span class="car-new-save" style="cursor:pointer;" title="Save"><i class="fas fa-save"></i></span>
+                                    <span class="car-new-cancel" style="cursor:pointer;font-size:15px;" title="Cancel"><i class="fas fa-window-close"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="person-edit-save">Save</button>
+                        <button id="person-edit-clear">Clear Changes</button>
+                    </section>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
@@ -176,15 +295,15 @@
                         console.log(a);
                         console.log(b);
                         var html = a.responseText;
-                        $(".cars > table").empty();
-                        $(".cars > table").html(html);
+                        $(".edit.cars > table").empty();
+                        $(".edit.cars > table").html(html);
                         actions();
                     }
                 });
             });
         });
 
-        $("#edit-clear").click(function () {
+        $("#person-edit-clear").click(function () {
             var em = $(this);
             var pr = $("[data-person-id].person.selected");
             var id = pr.data("person-id");
