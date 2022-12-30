@@ -53,7 +53,8 @@
                 <div class="pure-u-1" style="position:relative;height:100%;">
                     <header style="margin-bottom: 20px; font-size: 20px;">
                         <i class="fas fa-edit" aria-hidden="true"></i>
-                        Edit the person's information here:</header>
+                        Edit the person's information here:
+                    </header>
                     <section class="pure-u-1" style="margin-bottom:10px;">
                         <div class="pure-g" style="margin-bottom: 5px;">
                             <div class="pure-u-1-4 menu-table"><span>Id:</span></div>
@@ -132,8 +133,8 @@
                                                 <div class="pure-u-1-4">
                                                 </div>
                                                 <div class="pure-u-3-4">
-                                                    <span class="edit-save" style="cursor:pointer;" title="Save"><i class="fas fa-save"></i></span>
-                                                    <span class="edit-cancel" style="cursor:pointer;font-size:15px;" title="Cancel"><i class="fas fa-window-close"></i></span>
+                                                    <span class="car-edit-save" style="cursor:pointer;" title="Save"><i class="fas fa-save"></i></span>
+                                                    <span class="car-edit-cancel" style="cursor:pointer;font-size:15px;" title="Cancel"><i class="fas fa-window-close"></i></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -190,7 +191,8 @@
                 <div class="pure-u-1" style="position:relative;height:100%;">
                     <header style="margin-bottom: 20px; font-size: 20px;">
                         <i class="fas fa-star" aria-hidden="true"></i>
-                        Enter the person's information here for a new entry:</header>
+                        Enter the person's information here for a new entry:
+                    </header>
                     <section class="pure-u-1" style="margin-bottom:10px;">
                         <div class="pure-g" style="margin-bottom: 5px;">
                             <div class="pure-u-1-4 menu-table"><span>Id:</span></div>
@@ -272,7 +274,7 @@
         $("#sidebar .person").each(function () {
             var person = $(this);
             person.click(function () {
-                var id = person.data("person-id");
+                var id = person.attr("data-person-id");
 
                 //obtains the person information
                 $.ajax({
@@ -289,20 +291,20 @@
 
                         $("#sidebar .selected").removeClass("selected");
                         $("#sidebar [data-person-id=" + json.id + "]").addClass("selected");
-                    }
-                });
 
-                //and their cars (if any)
-                $.ajax({
-                    url: "/cars/cars/?personId=" + id,
-                    dataType: "html",
-                    complete: function (a, b) {
-                        console.log(a);
-                        console.log(b);
-                        var html = a.responseText;
-                        $(".edit.cars > table").empty();
-                        $(".edit.cars > table").html(html);
-                        actions();
+                        //and their cars (if any)
+                        $.ajax({
+                            url: "/cars/cars/?personId=" + id,
+                            dataType: "html",
+                            complete: function (a, b) {
+                                console.log(a);
+                                console.log(b);
+                                var html = a.responseText;
+                                $(".edit.cars > table").empty();
+                                $(".edit.cars > table").html(html);
+                                actions();
+                            }
+                        });
                     }
                 });
             });
@@ -323,7 +325,7 @@
         });
 
         /*saving the new person*/
-        $("#person-new-save").click(function() {
+        $("#person-new-save").click(function () {
             var pvm = {
                 Person: { FirstName: "", LastName: "" },
                 Cars: []
@@ -349,7 +351,7 @@
         });
 
         /*deletes a person*/
-        $(".person-delete").click(function(event) {
+        $(".person-delete").click(function (event) {
             event.stopPropagation();
             var em = $(this);
             var id = em.closest("[data-person-id]").data("person-id");
@@ -364,19 +366,66 @@
             });
         });
 
+        /*saving the new person*/
+        $("#person-edit-save").click(function () {
+            var pvm = {
+                Person: { Id: "", FirstName: "", LastName: "" },
+                Cars: []
+            };
+
+            pvm.Person.Id = $("#id").val();
+            pvm.Person.FirstName = $("#first-name").val();
+            pvm.Person.LastName = $("#last-name").val();
+
+            $("tr[data-car-id].car-show").each(function () {
+                var tr = $(this);
+                var id = tr.attr("data-car-id");
+                var make = tr.attr("data-car-make");
+                var model = tr.attr("data-car-model");
+                var licenseplate = tr.attr("data-car-licenseplate");
+                var deleted = tr.attr("data-car-deleted");
+
+                var car = {
+                    Id: id,
+                    PersonId: pvm.Person.Id,
+                    Make: make,
+                    Model: model,
+                    LicensePlate: licenseplate,
+                    Deleted: deleted
+                };
+
+                pvm.Cars.push(car);
+            });
+
+            $.ajax({
+                url: "/home/edit/",
+                dataType: "json",
+                data: pvm,
+                method: "POST",
+                complete: function (a, b) {
+                    console.log(a);
+                    console.log(b);
+                    if (b == "success") {
+                        window.location.reload();
+                        $("#sidebar > [data-person-id=" + pvm.Person.Id + "]").click();
+                    }
+                }
+            });
+        });
+
         function actions() {
             $(".edit-car").click(function () {
                 var em = $(this);
                 var tr = em.closest("tr[data-car-id]");
                 var cs = em.closest("tr.car-show");
-                var id = tr.data("car-id");
+                var id = tr.attr("data-car-id");
                 var ce = $("tr[data-car-id=" + id + "].car-edit");
 
                 cs.hide();
 
-                var make = tr.data("car-make");
-                var model = tr.data("car-model");
-                var licenseplate = tr.data("car-licenseplate");
+                var make = tr.attr("data-car-make");
+                var model = tr.attr("data-car-model");
+                var licenseplate = tr.attr("data-car-licenseplate");
 
                 ce.find(".car-edit-make").val(make);
                 ce.find(".car-edit-model").val(model);
@@ -391,14 +440,14 @@
                 var em = $(this);
                 var tr = em.closest("tr[data-car-id]");
                 var cs = em.closest("tr.car-show");
-                cs.data("is-deleted", true);
+                cs.attr("data-car-deleted", true);
                 cs.hide();
             });
 
-            $(".edit-cancel").click(function () {
+            $(".car-edit-cancel").click(function () {
                 var em = $(this);
                 var tr = em.closest("tr[data-car-id]");
-                var id = tr.data("car-id");
+                var id = tr.attr("data-car-id");
                 var ce = $("tr[data-car-id=" + id + "].car-edit");
                 var cs = $("tr[data-car-id=" + id + "].car-show");
 
@@ -406,10 +455,10 @@
                 cs.show();
             });
 
-            $(".edit-save").click(function () {
+            $(".car-edit-save").click(function () {
                 var em = $(this);
                 var tr = em.closest("tr.car-edit");
-                var id = tr.data("car-id");
+                var id = tr.attr("data-car-id");
                 var ce = $("tr[data-car-id=" + id + "].car-edit");
                 var cs = $("tr[data-car-id=" + id + "].car-show");
 
@@ -420,9 +469,9 @@
                 cs.find(".car-show-make-model").text(newMake + " • " + newModel);
                 cs.find(".car-show-licenseplate").text(newLicensePlate);
 
-                cs.data("car-make", newMake);
-                cs.data("car-model", newModel);
-                cs.data("car-licenseplate", newLicensePlate);
+                cs.attr("data-car-make", newMake);
+                cs.attr("data-car-model", newModel);
+                cs.attr("data-car-licenseplate", newLicensePlate);
 
                 ce.hide();
                 cs.show();
