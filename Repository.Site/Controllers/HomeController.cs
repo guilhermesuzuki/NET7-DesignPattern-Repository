@@ -36,7 +36,7 @@ namespace Repository.Site.Controllers
                     .Where(x => x.PersonId == person.Id)
                     .ToList();
 
-                pvm.People.Add(new PersonCars { Person = person, Cars = cars });
+                pvm.People.Add(new PersonViewModel { Person = person, Cars = cars });
             }
 
             return View(pvm);
