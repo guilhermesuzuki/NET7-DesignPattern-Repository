@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repository.Data.Interfaces;
+using Repository.Models;
 
 namespace Repository.Site.Controllers
 {
@@ -13,8 +14,14 @@ namespace Repository.Site.Controllers
             this._carRepository = carRepository;
         }
 
+        [HttpPost]
+        public IActionResult Car([FromBody] Car car)
+        {
+            return View(car);
+        }
+
         [HttpGet]
-        public IActionResult Index(Guid personId)
+        public IActionResult Cars(Guid personId)
         {
             var cars = this._carRepository
                 .Query()

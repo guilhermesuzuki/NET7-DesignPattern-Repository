@@ -1,0 +1,60 @@
+﻿@model Car
+@using Repository.Models;
+@{
+    var car = Model;
+}
+<tr data-car-id="@car.Id" data-car-make="@car.Make" data-car-model="@car.Model" data-car-licenseplate="@car.LicensePlate" class="car-show">
+    <td>
+        <ul class="menu-table">
+            <li style="padding-right: 5px;"><i class="fas fa-car"></i></li>
+            <li>
+                <div class="car-show-make-model">@car.Make • @car.Model</div>
+                <div style="font-size: 12px;">@car.Id</div>
+            </li>
+        </ul>
+    </td>
+    <td class="car-show-licenseplate">@car.LicensePlate</td>
+    <td style="text-align: right;">
+        <span class="edit-car" style="cursor:pointer;" title="Edit"><i class="fas fa-edit"></i></span>
+        <span class="delete-car" style="cursor:pointer;font-size:15px;" title="Delete"><i class="fas fa-trash"></i></span>
+    </td>
+</tr>
+<tr data-car-id="@car.Id" class="car-edit" style="display:none;">
+    <td colspan="10">
+        <div class="pure-u-1" style="border:1px dotted #222;box-sizing:border-box;padding:10px;margin-bottom:10px;">
+            <div class="pure-g">
+                <div class="pure-u-1-4 menu-table">
+                    <span>Make:</span>
+                </div>
+                <div class="pure-u-3-4">
+                    <input class="car-edit-make" value="@car.Make">
+                </div>
+            </div>
+            <div class="pure-g">
+                <div class="pure-u-1-4 menu-table">
+                    <span>Model:</span>
+                </div>
+                <div class="pure-u-3-4">
+                    <input class="car-edit-model" value="@car.Model">
+                </div>
+            </div>
+            <div class="pure-g">
+                <div class="pure-u-1-4 menu-table">
+                    <span>License Plate:</span>
+                </div>
+                <div class="pure-u-3-4">
+                    <input class="car-edit-licenseplate" value="@car.LicensePlate">
+                </div>
+            </div>
+            <div class="pure-g" style="margin-top:5px;">
+                <div class="pure-u-1-4">
+                </div>
+                <div class="pure-u-3-4">
+                    <span class="edit-save" style="cursor:pointer;" title="Save"><i class="fas fa-save"></i></span>
+                    <span class="edit-cancel" style="cursor:pointer;font-size:15px;" title="Cancel"><i class="fas fa-window-close"></i></span>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>
+
