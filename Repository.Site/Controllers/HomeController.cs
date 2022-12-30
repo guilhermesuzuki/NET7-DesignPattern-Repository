@@ -53,10 +53,18 @@ namespace Repository.Site.Controllers
         {
             if (pvm != null)
             {
+                pvm.Person.Id = Guid.NewGuid();
+
                 using (var ts = new TransactionScope())
                 {
                     this._personRepository.Add(pvm.Person);
-                    foreach (var car in pvm.Cars) this._carRepository.Add(car);
+                    foreach (var car in pvm.Cars)
+                    {
+                        car.Id = Guid.NewGuid();
+                        car.PersonId = pvm.Person.Id;
+
+                        this._carRepository.Add(car);
+                    }
                     ts.Complete();
                 }
 

@@ -15,7 +15,7 @@ namespace Repository.Site.Controllers
         }
 
         [HttpPost]
-        public IActionResult Car([FromBody] Car car)
+        public IActionResult Car(Car car)
         {
             return View(car);
         }

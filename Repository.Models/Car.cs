@@ -16,7 +16,7 @@ namespace Repository.Models
         Interfaces.IDeleted
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.Empty;
 
         /// <summary>
         /// Make of the Car.
