@@ -75,15 +75,12 @@ namespace Repository.Data.Implementations
 
         public IEnumerable<T> Get(string where, string order)
         {
-            using (var ef = new EFContext(this._configuration))
-            {
-                var query = this.Query();
+            var query = this.Query();
 
-                if (string.IsNullOrWhiteSpace(where) == false) query = query.Where(where);
-                if (string.IsNullOrWhiteSpace(order) == false) query = query.OrderBy(order);
+            if (string.IsNullOrWhiteSpace(where) == false) query = query.Where(where);
+            if (string.IsNullOrWhiteSpace(order) == false) query = query.OrderBy(order);
 
-                return query.ToList();
-            }
+            return query.ToList();
         }
 
         public T? Get(Guid id)
