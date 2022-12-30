@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Cars\**" />
+    <Content Remove="Views\Cars\**" />
+    <EmbeddedResource Remove="Views\Cars\**" />
+    <None Remove="Views\Cars\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Repository.Data\Repository.Data.csproj" />
   </ItemGroup>
 

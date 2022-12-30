@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repository.Data.Interfaces;
+using Repository.Models;
 using Repository.Site.ViewModels;
 using System.Transactions;
 
@@ -146,6 +147,33 @@ namespace Repository.Site.Controllers
             }
 
             return BadRequest();
+        }
+
+        /// <summary>
+        /// Returns the HTML view from a car instance.
+        /// </summary>
+        /// <param name="car"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Car(Car car)
+        {
+            return View(car);
+        }
+
+        /// <summary>
+        /// Returns the HTML view from the cars belonging to a person (given their id).
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Cars(Guid personId)
+        {
+            var cars = this._carRepository
+                .Query()
+                .Where(x => x.PersonId == personId)
+                .ToList();
+
+            return View(cars);
         }
     }
 }
