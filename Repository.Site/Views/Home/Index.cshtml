@@ -30,13 +30,18 @@
                 <div data-person-id="@person.Person.Id" class="pure-u-1 person @(selectedPerson == person.Person ? "selected" : null)" style="padding:10px;border: 1px solid #222;box-sizing:border-box;margin-bottom: 10px; cursor: pointer;">
                     <ul class="menu-table">
                         <li style="padding-right:5px;"><i class="fas fa-user"></i></li>
-                        <li>
+                        <li style="width:100%;">
                             <div style="font-size: 18px;">
                                 <strong>@person.Person.LastName, @person.Person.FirstName</strong>
                             </div>
                             <div style="font-size: 10px;">
                                 @person.Person.Id
                             </div>
+                        </li>
+                        <li>
+                            <span class="person-delete" title="Deletes a Person">
+                                <i class="fas fa-trash"></i>
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -206,7 +211,7 @@
                             </div>
                         </div>
                     </section>
-                    <section class="cars pure-u-1">
+                    <section class="new cars pure-u-1">
                         <table class="pure-u-1" border="0" cellspacing="5" width="100%" style="display:table;border:1px solid #222;">
                             <thead>
                                 <tr style="margin-bottom: 5px;">
@@ -255,8 +260,8 @@
                                 </div>
                             </div>
                         </div>
-                        <button id="person-edit-save">Save</button>
-                        <button id="person-edit-clear">Clear Changes</button>
+                        <button id="person-new-save">Save</button>
+                        <button id="person-new-clear">Clear Changes</button>
                     </section>
                 </div>
             </div>
@@ -309,6 +314,54 @@
             var id = pr.data("person-id");
             pr.click();
             console.log(pr);
+        });
+
+        $("#person-new-clear").click(function () {
+            $(".new.cars > tbody").empty();
+            $("#new-first-name").val("");
+            $("#new-last-name").val("");
+        });
+
+        /*saving the new person*/
+        $("#person-new-save").click(function() {
+            var pvm = {
+                Person: { FirstName: "", LastName: "" },
+                Cars: []
+            };
+
+            pvm.Person.FirstName = $("#new-first-name").val();
+            pvm.Person.LastName = $("#new-last-name").val();
+
+            $.ajax({
+                url: "/home/new/",
+                dataType: "json",
+                data: pvm,
+                method: "POST",
+                complete: function (a, b) {
+                    console.log(a);
+                    console.log(b);
+                    if (b == "success") {
+                        $("#person-new-clear").click();
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+
+        /*deletes a person*/
+        $(".person-delete").click(function(event) {
+            event.stopPropagation();
+            var em = $(this);
+            var id = em.closest("[data-person-id]").data("person-id");
+            $.ajax({
+                url: "/home/delete/?personId=" + id,
+                method: "DELETE",
+                complete: function (a, b) {
+                    console.log(a);
+                    console.log(b);
+                    if (b == "success") window.location.reload();
+                }
+            });
         });
 
         function actions() {
