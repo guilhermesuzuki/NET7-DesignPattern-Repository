@@ -71,7 +71,7 @@
                             <thead>
                                 <tr style="margin-bottom: 5px;">
                                     <th style="width:auto;text-align:left;">Model</th>
-                                    <th style="width:20%;">License Plate</th>
+                                    <th style="width:20%;text-align:left;">License Plate</th>
                                     <th style="width: 50px;"></th>
                                 </tr>
                             </thead>
@@ -184,6 +184,14 @@
             });
         });
 
+        $("#edit-clear").click(function () {
+            var em = $(this);
+            var pr = $("[data-person-id].person.selected");
+            var id = pr.data("person-id");
+            pr.click();
+            console.log(pr);
+        });
+
         function actions() {
             $(".edit-car").click(function () {
                 var em = $(this);
@@ -248,7 +256,7 @@
                 cs.show();
             });
         }
-        
+
         actions();
     </script>
 </body>

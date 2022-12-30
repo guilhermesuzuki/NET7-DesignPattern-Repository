@@ -11,7 +11,9 @@ namespace Repository.Models
 {
     [Table("Cars")]
     [Index(nameof(Make), nameof(Model), nameof(LicensePlate), nameof(PersonId), IsUnique = true, Name = "IX_Cars_1")]
-    public class Car: Interfaces.IId
+    public class Car: 
+        Interfaces.IId,
+        Interfaces.IDeleted
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -48,5 +50,8 @@ namespace Repository.Models
         /// </summary>
         [ForeignKey(nameof(PersonId))]
         public Person? Person { get; set; }
+
+        [NotMapped]
+        public bool Deleted { get; set; }
     }
 }
